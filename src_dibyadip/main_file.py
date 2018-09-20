@@ -23,7 +23,8 @@ if __name__=="__main__":
 		Flag = False
 		feature_vector = np.array([])
 		count = -1
-		rootDir = '/media/dibyadip/DC/Project Work/SKS/activity_recognition/KTH'
+		#the root directory for the dataset is to be written as 'location/dataset_name'
+		rootDir = ''
 
 		for dirName, subdirList, fileList in os.walk(rootDir):
 			vid=""
