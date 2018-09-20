@@ -1,6 +1,4 @@
-# Acoustic Scene Classification
-
-Extraction of Environmental Features from Background Auditory Information using Convolutional Neural Networks and Success Weight Ensemble Classifier
+Add the datasets in this location as HMDB or KTH or Weizman with all the folders within it as different classes.
 
 ## Author
 
