@@ -36,10 +36,9 @@ if __name__=="__main__":
 				count1 = count1 + 1
 				vid = dirName+'/'+fname
 
-				b = HOG_temporal(vid)
-				#b = trackbody(vid)
-				#h = HOG(vid)
-				#b = np.concatenate((b, h), axis=0)
+				b = trackbody(vid)
+				h = HOG_temporal(vid)
+				b = np.concatenate((b, h), axis=0)
 				
 				count_final = np.array([count],dtype='int')
 
@@ -60,17 +59,10 @@ if __name__=="__main__":
 				#feature_vector = np.matrix(feature_vector)
 
 		np.save('./data/feature_vector_HMDB_Hog_temp.npy', feature_vector)
-	#df =  pd.DataFrame(feature_vector)
-	#df.to_csv('feature_matrix.csv',header=None,index =False)
 
 	#print(feature_vector)
-	#storing the feature matrix
 	else:
 		feature_vector = np.load('./data/feature_vector_HMDB_Hog_temp.npy')
 
 	SVM(feature_vector)
 	#desicion_tree_classifier(feature_vector)
-	#neural_net_classifier(feature_vector)
-    
-	#feature_vector.dump("feature_matrix.dat")
-	#mat2 = numpy.load("my_matrix.dat")
