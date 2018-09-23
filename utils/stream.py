@@ -12,4 +12,3 @@ def streamer(path):
     while success:
         yield image
         success,image = vidcap.read()
-        print('Read a new frame: ', success)

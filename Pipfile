@@ -5,6 +5,9 @@ name = "pypi"
 
 [packages]
 opencv-python = "*"
+numpy = "*"
+colored = "*"
+# "68c0051" = {path = "/home/aishik/ProgramFiles/YOLO3-4-Py"}
 
 [dev-packages]
 pylint = "*"
