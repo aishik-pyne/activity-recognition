@@ -1,5 +1,5 @@
 from pydarknet import Detector, Image
-
+import cv2
 
 class YoloV3:
   def __init__(self, config):
@@ -25,3 +25,16 @@ class YoloV3:
     del dark_frame
 
     return results
+  
+  def segment(self, frame, classes=[]):
+    predictions = self.predict(frame)
+    print(predictions)
+    for prediction in predictions:
+      classLabel, confidence, (x, y, w, h) = prediction
+      x1, x2, y1, y2 = int(x-w/2), int(x+w/2), int(y-h/2), int(y+h/2) 
+      print(x1,x2,y1,y2)
+      print(frame.shape)
+      segment = frame[int(x-w/2): int(x+w/2): int(y-h/2), int(y+h/2),:]
+      print(segment)
+      cv2.imshow("cropped", segment)
+      cv2.waitKey(0)

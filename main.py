@@ -25,7 +25,8 @@ def test_yolo():
     net = YoloV3(config["paths"]["yolov3"])
     print("Frames in the file {}".format(frameCount(kth.randomFile(kth_dataset_path))))
     for frame in streamer(kth.randomFile(kth_dataset_path)):
-        print(net.predict(frame))
+        print(frame)
+        net.segment(frame)
 test_kth()
 test_yolo()
 # if __name__ == "__main__":
