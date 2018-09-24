@@ -22,10 +22,10 @@ def test_kth():
         
 def test_yolo():
     print("{}Testing yolo...{}".format(bg(1), attr('reset')))
-    # net = YoloV3(config["paths"]["yolov3"])
+    net = YoloV3(config["paths"]["yolov3"])
     print("Frames in the file {}".format(frameCount(kth.randomFile(kth_dataset_path))))
     for frame in streamer(kth.randomFile(kth_dataset_path)):
-        pass
+        print(net.predict(frame))
 test_kth()
 test_yolo()
 # if __name__ == "__main__":

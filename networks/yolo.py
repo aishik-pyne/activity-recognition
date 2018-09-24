@@ -15,13 +15,13 @@ class YoloV3:
       self.cfg = bytes(config['cfg'], encoding='utf-8')
     else:
       raise KeyError('cfg key is missing')
-
+    print(self.data, self.cfg, self.weights)
     # Init the network
-    self.net = Detector(self.cfg, self.weights, self.data)
+    self.net = Detector(self.cfg, self.weights, 0, self.data)
 
   def predict(self, frame):
     dark_frame = Image(frame)
     results = self.net.detect(dark_frame)
     del dark_frame
 
-    return dark_frame
+    return results

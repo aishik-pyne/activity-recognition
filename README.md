@@ -17,4 +17,6 @@ Pipfile contains dependencies
   # backup = /home/pjreddie/backup/
   eval=coco
   ```
-  
+## Alternative of yolo(simple)
+- pipenv install yolo34py-gpu 
+- Follow [](https://github.com/ethereum-mining/ethminer/issues/731) for troubleshoot gcc version

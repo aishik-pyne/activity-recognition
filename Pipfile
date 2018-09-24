@@ -7,7 +7,7 @@ name = "pypi"
 opencv-python = "*"
 numpy = "*"
 colored = "*"
-# "68c0051" = {path = "/home/aishik/ProgramFiles/YOLO3-4-Py"}
+"yolo34py-gpu" = "*"
 
 [dev-packages]
 pylint = "*"
