@@ -5,6 +5,9 @@ name = "pypi"
 
 [packages]
 opencv-python = "*"
+numpy = "*"
+colored = "*"
+"yolo34py-gpu" = "*"
 
 [dev-packages]
 pylint = "*"

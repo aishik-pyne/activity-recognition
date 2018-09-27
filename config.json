@@ -1,5 +1,10 @@
 {
-    "paths": {
-        "kth_dataset": "/home/sks/aishik/kth_dataset/"
+  "paths": {
+    "kth_dataset": "/data/datasets/kth_dataset",
+    "yolov3": {
+      "weights": "/data/networks/yolov3/weights/yolov3.weights",
+      "data": "/data/networks/yolov3/cfg/coco.data",
+      "cfg": "/data/networks/yolov3/cfg/yolov3.cfg"
     }
+  }
 }
