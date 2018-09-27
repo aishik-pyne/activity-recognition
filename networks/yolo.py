@@ -28,13 +28,8 @@ class YoloV3:
   
   def segment(self, frame, classes=[]):
     predictions = self.predict(frame)
-    print(predictions)
     for prediction in predictions:
       classLabel, confidence, (x, y, w, h) = prediction
       x1, x2, y1, y2 = int(x-w/2), int(x+w/2), int(y-h/2), int(y+h/2) 
-      print(x1,x2,y1,y2)
-      print(frame.shape)
-      segment = frame[int(x-w/2): int(x+w/2): int(y-h/2), int(y+h/2),:]
-      print(segment)
-      cv2.imshow("cropped", segment)
-      cv2.waitKey(0)
+      segment = frame[y1: y2,x1: x2,:]
+      yield classLabel, confidence, segment
