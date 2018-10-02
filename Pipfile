@@ -8,6 +8,8 @@ opencv-python = "*"
 numpy = "*"
 colored = "*"
 "yolo34py-gpu" = "*"
+tensorflow-gpu = "*"
+pandas = "*"
 
 [dev-packages]
 pylint = "*"
