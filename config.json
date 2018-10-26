@@ -1,6 +1,7 @@
 {
   "paths": {
     "kth_dataset": "/data/datasets/kth_dataset",
+    "kth_clip": "/data/datasets/kth_clip",
     "yolov3": {
       "weights": "/data/networks/yolov3/weights/yolov3.weights",
       "data": "/data/networks/yolov3/cfg/coco.data",

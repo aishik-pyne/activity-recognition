@@ -10,6 +10,7 @@ colored = "*"
 "yolo34py-gpu" = "*"
 tensorflow-gpu = "*"
 pandas = "*"
+jupyter = "*"
 
 [dev-packages]
 pylint = "*"

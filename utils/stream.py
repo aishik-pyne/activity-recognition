@@ -12,3 +12,9 @@ def streamer(path):
     while success:
         yield image
         success,image = vidcap.read()
+
+def loadImages(filePaths):
+    if type(filePaths) == list:
+        return [cv2.imread(_f, 1) for _f in filePaths ]
+    else:
+        return cv2.imread(filePaths, 1)
