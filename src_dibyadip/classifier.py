@@ -17,47 +17,68 @@ from sklearn.model_selection import train_test_split
 from sklearn.svm import SVC
 from sklearn.tree import DecisionTreeClassifier
 import matplotlib.pyplot as plt
+import tflearn
+from tflearn.layers.core import input_data, dropout, fully_connected
+from tflearn.layers.estimator import regression
 
 
-
-# fix random seed for reproducibility
-def neural_net_classifier(dataset):
-
-	seed = 7
+def one_hot(labels, output_dim):
+	labels = list(labels)
 	
+	vector = np.zeros((len(labels), output_dim), dtype=int)
+	for i in range(len(labels)):
+		#print(i, int(labels[i])-1)
+		vector[i][int(labels[i])-1]=1
+
+	return vector
+
+
+def MLP(dataset):
+	seed = 7
+	epoch = 100
+
 	np.random.seed(seed)
 
 	labels= dataset[:,-1]
-#	print(labels.shape)
+
 	p = np.unique(labels)
 
 	output_dim = len(p)
+	labels = one_hot(labels, output_dim)
 
-	no_of_hidden_neurons = 8
+	feature = np.delete(dataset, -1, 1)	
 
-	feature = dataset[::-1]
-
-	no_of_samples,input_dimension = feature.shape
-
+	no_of_samples, input_dimension = feature.shape
+	print(no_of_samples, input_dimension)
 	
-	model = Sequential()
-	model.add(Dense(no_of_hidden_neurons, input_dim=input_dimension, activation='relu'))
-	model.add(Dense(output_dim, activation='softmax'))
-	# Compile model
-	model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-	model.fit(feature, labels, validation_split=0.33, epochs=150, batch_size=10, verbose=0)
+	X_train, X_test, y_train, y_test = train_test_split(feature, labels, test_size = 0.3)
+	#print(X_train.shape, y_train.shape)
 
-	scores = model.evaluate(feature, labels)
-	print("\n%s: %.2f%%" % (model.metrics_names[1], scores[1]*100))
+	tflearn.init_graph(num_cores=8, gpu_memory_fraction=0.5)
 
+	net = input_data(shape=[None, input_dimension], name='input')
 	
+	net = tflearn.fully_connected(net, 1024, activation='relu')
+	net = tflearn.dropout(net, 0.5)
+
+	net = tflearn.fully_connected(net, 1024, activation='relu')
+	net = tflearn.dropout(net, 0.5)
+
+	net = tflearn.fully_connected(net, output_dim, activation='softmax')
+	net = regression(net, optimizer='adam', learning_rate=0.01, 
+					loss='categorical_crossentropy', name='targets')
+
+	model = tflearn.DNN(net)
 	
+	#model.summary()
+	tr = (input_dimension*1024 + 1) + (1024*1024 + 1) + (1024*6 + 1) 
+	print("Trainable parameters:", tr)
 
-	'''estimator = KerasClassifier(build_fn=baseline_model, nb_epoch=200, batch_size=5, verbose=0)
-	kfold = KFold(n_splits=10, shuffle=True, random_state=seed)
+	model.fit({'input' : X_train}, {'targets' : y_train}, n_epoch=epoch, 
+				validation_set=({'input' : X_test}, {'targets' : y_test}),
+						show_metric=True, run_id='DCNet')
 
-	results = cross_val_score(estimator, feature, labels, cv=kfold)
-	print("Baseline: %.2f%% (%.2f%%)" % (results.mean()*100, results.std()*100))'''
+
 
 
 def SVM(dataset):
@@ -82,7 +103,8 @@ def SVM(dataset):
 	print(no_of_samples, input_dimension)
 	
 	X_train, X_test, y_train, y_test = train_test_split(feature, labels, test_size = 0.3)
- 	
+	#print(X_train[0])
+ 
 	#print(X_train.shape, y_train.shape, X_test.shape , y_test.shape)	
 
 	# training a linear SVM classifier
