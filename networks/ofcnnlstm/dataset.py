@@ -1,5 +1,6 @@
 import threading
 import os
+import random
 import pandas as pd
 import numpy as np
 import cv2
@@ -34,15 +35,27 @@ def threadsafe_generator(func):
 
 class DataSet:
 
-  def __init__(self, base_path, seq_length=30, class_limit=None, image_shape=(224, 224, 3)):
-    self.data_file = pd.read_csv(os.path.join(base_path, 'data_file.csv'))
+  def __init__(self, kth_clip_path, seq_length=30, class_limit=None, image_shape=(224, 224, 3)):
+    random.seed(1)
+    self.base_path = os.path.join(kth_clip_path, 'kth{}/'.format(seq_length))
+    # self.data_file = pd.read_csv(os.path.join(base_path, 'data_file.csv'))
     self.classes = self.get_classes()
+
+  def get_clips(self):
+    X = []
+    Y = []
+    for c in self.classes:
+      for clip in os.listdir(os.path.join(self.base_path, c)):
+        X.append(clip)
+        Y.append(c)
+    return X, Y
 
   def get_classes(self):
     """
     Gets the list of classes
     """
-    return sorted(list(set(self.data_file["class"])))
+    # return sorted(list(set(self.data_file["class"])))
+    return os.listdir(self.base_path)
 
   def get_class_one_hot(self, class_str):
     """Given a class as a string, return its number in the classes
@@ -101,10 +114,15 @@ class DataSet:
     else:
       raise ValueError("sample['clip'] is not a valid directory")
 
-  def split_train_test(self):
+  def split_train_test(self, split=0.8):
     """Split the data into train and test groups."""
-    train = self.data_file[self.data_file['type'] == 'train']
-    test = self.data_file[self.data_file['type'] == 'test']
+    # train = self.data_file[self.data_file['type'] == 'train']
+    # test = self.data_file[self.data_file['type'] == 'test']
+    X, Y = self.get_clips()
+    Z = list(zip(X, Y))
+    random.shuffle(Z)
+    Z = zip(*Z)
+    train, test = (X[:int(len(X)*split)], Y[:int(len(Y)*split)]), (X[int(len(X)*split):], Y[int(len(Y)*split):]),
     return train, test
 
   @threadsafe_generator
